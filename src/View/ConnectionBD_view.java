@@ -57,8 +57,4 @@ public class ConnectionBD_view extends JFrame{
         
         setVisible(true);
     }
-    
-    public static void main(String[] args) {
-        ConnectionBD_view ejecutar = new ConnectionBD_view();
-    }
 }
