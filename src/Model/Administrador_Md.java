@@ -17,11 +17,13 @@ public class Administrador_Md extends ConnectionBD{
     ConnectionBD_ctrl connectionBD_ctrl;
     public ConnectionBD_view connectionBD_view;
 
-    public Administrador_Md(ConnectionBD_view connectionBD_view) {
+    public Administrador_Md(ConnectionBD_view connectionBD_view) 
+    {
         this.connectionBD_view = connectionBD_view;
     }
     
-    private boolean verificarCodigo(int codigo) {
+    private boolean verificarCodigo(int codigo) //funcional
+    {
         boolean existe = false;
         String sql = "SELECT COUNT(*) FROM administradores WHERE codigo = ?"; 
 
@@ -48,7 +50,8 @@ public class Administrador_Md extends ConnectionBD{
         return existe;
     }
 
-    private int generarCodigo() {
+    private int generarCodigo() //funcional
+    {
         Random random = new Random();
         int codigo;
         boolean existe;
@@ -61,7 +64,7 @@ public class Administrador_Md extends ConnectionBD{
         return codigo;
     }
     
-    public List<Administrador> listarAdmins()
+    public List<Administrador> listarAdmins()//funcional
     {
         List<Administrador> results = new ArrayList<>();
         try {
@@ -89,7 +92,7 @@ public class Administrador_Md extends ConnectionBD{
         return results;
     }
     
-    public Administrador buscarAdmin(int codigo)
+    public Administrador buscarAdmin(int codigo)//funcional
     {
         //para hacer mas breve buscar el codigo se hará uso de la funcion listarAdmins
         List administradores = listarAdmins();
@@ -97,10 +100,39 @@ public class Administrador_Md extends ConnectionBD{
             Administrador get = (Administrador) administradores.get(i);
             if(get.getCodigo()==codigo)
             {
-                return get;
+                return get;//se encontró el administrador
             }
         }
         return null;//no se encontro el admin buscado con el código
+    }
+    
+    public void eliminarAdmin(int codigo)//funcional
+    {
+        //eliminar por codigo
+        //parahacer mas breve eliminar se buscara el admin con la funcion buscar primero:
+        Administrador admin = buscarAdmin(codigo);
+        //no se implementará la logica se si es null o no porque antes de que se ejecute la accion eliminar admin, el programa primero lo buscara, por lo que seria redundante
+        try {
+            connect(connectionBD_view.JTusuario.getText(), new String(connectionBD_view.JPcontrasena.getPassword()));
+            String sql = "delete from administradores where codigo = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);            
+            preparedStatement.setInt(1, codigo);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar administrador: " + e);
+        }
+        finally
+        {
+            disconnect();
+        }
+    }
+    
+    public void editarAdmin(int codigo)
+    {
+        //ya que se debe dar la opcion de editar contrasena, antes de entrar a esta funcion se enviara un codigo de verificacion
+        //al correo del admin los administradores distintos al admin que se quiere eliminar
+    
     }
     
     public static void main(String[] args) {/*main de pruebass*/
@@ -124,5 +156,10 @@ public class Administrador_Md extends ConnectionBD{
         for (Administrador administrador : lista) {
             System.out.println(administrador);
         }
+        
+        int codigoABuscar = 11111; // El código que deseas buscar
+        xx.eliminarAdmin(codigoABuscar);
+
+        
     }
 }
