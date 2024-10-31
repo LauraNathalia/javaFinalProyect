@@ -2,9 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+/*
+Nombre: Laura Nathalia Padilla Castaño
+Código: 202357635
+Nombre del programa: Coffee & Milk
+Funcion de la clase:
+    la presente clase implementa las funciones de las acciones que se pueden realizar en la entidad administrador. 
+    a la hora de agregar el administrador, esta accion solo sera realizada por el programador, quien le brindara acceso
+    al administrador de manejar su programa. por lo tanto este metodo de agregar administrador solo lo podra manejar el programador.
+    en otras palabras programador creara admin en la bd y admin inicia sesion en el programa con los datos que le proporcione este
+*/
+
 package Model;
 
-import Controller.ConnectionBD_ctrl;
 import View.ConnectionBD_view;
 import java.util.*;
 import java.sql.*;
@@ -12,9 +22,8 @@ import java.sql.*;
 /**
  *
  * @author Laura Nathalia
- */
+**/
 public class Administrador_Md extends ConnectionBD{
-    ConnectionBD_ctrl connectionBD_ctrl;
     public ConnectionBD_view connectionBD_view;
 
     public Administrador_Md(ConnectionBD_view connectionBD_view) 
@@ -22,60 +31,43 @@ public class Administrador_Md extends ConnectionBD{
         this.connectionBD_view = connectionBD_view;
     }
     
-    private boolean verificarCodigo(int codigo) //funcional
+    private void agregarAdmin(Administrador administrador)//funcional
     {
-        boolean existe = false;
-        String sql = "SELECT COUNT(*) FROM administradores WHERE codigo = ?"; 
-
         try {
-            // Conéctate a la base de datos con las credenciales de la vista
-            connect(connectionBD_view.JTusuario.getText(), new String(connectionBD_view.JPcontrasena.getPassword()));
-
-            // Prepara la consulta
+            connect();
+            String sql = "insert into administradores values (?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, codigo); // Establece el parámetro en la consulta
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                existe = resultSet.getInt(1) > 0; // Si el conteo es mayor a 0, el código existe
-            }
-
-            resultSet.close();
-            preparedStatement.close(); // Cierra el PreparedStatement
+            preparedStatement.setInt(1, administrador.getCodigo());
+            preparedStatement.setString(2, administrador.getContrasena());
+            preparedStatement.setString(3, administrador.getFechaCreacion());
+            preparedStatement.setString(4, administrador.getPrimerNombre());
+            preparedStatement.setString(5, administrador.getSegundoNombre());
+            preparedStatement.setString(6, administrador.getPrimerApellido());
+            preparedStatement.setString(7, administrador.getSegundoApellido());
+            preparedStatement.setString(8, administrador.getCorreo());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException e) {
-            System.err.println("Error al verificar el nuevo código: " + e);
+            System.out.println("Error al insertar administrador: " + e);
         }
-
-        return existe;
-    }
-
-    private int generarCodigo() //funcional
-    {
-        Random random = new Random();
-        int codigo;
-        boolean existe;
-
-        do {
-            codigo = random.nextInt(100000); // genarar un codigo ramdom de 5 cifras
-            existe = verificarCodigo(codigo); //verificar que no exista
-        } while (existe);
-
-        return codigo;
+        finally
+        {
+            disconnect();
+        }
     }
     
     public List<Administrador> listarAdmins()//funcional
     {
         List<Administrador> results = new ArrayList<>();
         try {
-            connect(connectionBD_view.JTusuario.getText(), new String(connectionBD_view.JPcontrasena.getPassword()));
+            connect();
             String sql = "select * from administradores";
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             
             while(resultSet.next())
             {
-                Administrador admin = new Administrador(resultSet.getInt("codigo"), resultSet.getString("contrasena"), resultSet.getString("fechaCreacion"), resultSet.getString("primerNombre"), resultSet.getString("segundoNombre"), resultSet.getString("primerApellido"), resultSet.getString("segundoApellido"));
+                Administrador admin = new Administrador(resultSet.getInt("codigo"), resultSet.getString("contrasena"), resultSet.getString("fechaCreacion"), resultSet.getString("primerNombre"), resultSet.getString("segundoNombre"), resultSet.getString("primerApellido"), resultSet.getString("segundoApellido"), resultSet.getString("correo"));
                 results.add(admin);
             }
             
@@ -83,7 +75,7 @@ public class Administrador_Md extends ConnectionBD{
             
         } 
         catch (SQLException e) {
-            System.out.println("Error al consultar administrador: " + e);
+            System.out.println("Error al listar administradores: " + e);
         }
         finally
         {
@@ -106,14 +98,14 @@ public class Administrador_Md extends ConnectionBD{
         return null;//no se encontro el admin buscado con el código
     }
     
-    public void eliminarAdmin(int codigo)//funcional
+    private void eliminarAdmin(int codigo)//funcional
     {
         //eliminar por codigo
         //parahacer mas breve eliminar se buscara el admin con la funcion buscar primero:
         Administrador admin = buscarAdmin(codigo);
         //no se implementará la logica se si es null o no porque antes de que se ejecute la accion eliminar admin, el programa primero lo buscara, por lo que seria redundante
         try {
-            connect(connectionBD_view.JTusuario.getText(), new String(connectionBD_view.JPcontrasena.getPassword()));
+            connect();
             String sql = "delete from administradores where codigo = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);            
             preparedStatement.setInt(1, codigo);
@@ -128,13 +120,35 @@ public class Administrador_Md extends ConnectionBD{
         }
     }
     
-    public void editarAdmin(int codigo)
+    public void editarAdmin(Cliente cliente)//
     {
-        //ya que se debe dar la opcion de editar contrasena, antes de entrar a esta funcion se enviara un codigo de verificacion
-        //al correo del admin los administradores distintos al admin que se quiere eliminar
+        //solo hayun administrador en el sistema, (el cliente, comprador del programa, dueño del negocio, etc)
+        //el metodo pide un obj. cliente y lo actualizara completo, pero a la hora de pedir actualizar admin se da la opcion
+        //de cuales atributos actualizar, se cambian en el objeto, y se deja el resto igual.
+        try {
+            connect();
+            String sql = "update clientes set primerNombre = ?, segundoNombre=?, primerApellido=?, segundoApellido=?, correo=?, contrasena=?, telefono=? where ID=?";//la pk en administrador sí se puede cambiar
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, cliente.getPrimerNombre());
+            preparedStatement.setString(2, cliente.getSegundoNombre());
+            preparedStatement.setString(3, cliente.getPrimerApellido());
+            preparedStatement.setString(4, cliente.getSegundoApellido());
+            preparedStatement.setString(5, cliente.getCorreo());
+            preparedStatement.setString(6, cliente.getContrasena());
+            preparedStatement.setLong(7, cliente.getTelefono());
+            preparedStatement.setLong(8, cliente.getID());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar administrador : " + e);
+        }
+        finally
+        {
+            disconnect();
+        }
     
     }
-    
+ 
     public static void main(String[] args) {/*main de pruebass*/
         ConnectionBD_view ejecutar = new ConnectionBD_view();
         while (true) {
@@ -145,11 +159,11 @@ public class Administrador_Md extends ConnectionBD{
             try {
                 Thread.sleep(500); // Verifica cada medio segundo
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("error: "+e);
             }
         }
         Administrador_Md xx = new Administrador_Md(ejecutar); // Pasa valores por defecto si es necesario
-        int codigo = xx.generarCodigo();
+        /*int codigo = xx.generarCodigo();
         System.out.println("codigo:" + codigo);
         
         List<Administrador> lista = xx.listarAdmins();
@@ -159,7 +173,10 @@ public class Administrador_Md extends ConnectionBD{
         
         int codigoABuscar = 11111; // El código que deseas buscar
         xx.eliminarAdmin(codigoABuscar);
-
         
+        Administrador admin = new Administrador(11111, "hola", "2024/10/30", "laura", "nathalia","padilla", "castano", "hola@gmail.com");
+        xx.agregarAdmin(admin);
+        xx.eliminarAdmin(11111);
+        */
     }
 }

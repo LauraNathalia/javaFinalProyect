@@ -18,16 +18,14 @@ public class ConnectionBD {
     public ConnectionBD() {
     }
     
-    
-    public void connect(String usuario, String contrasena){
+    public void connect(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/proyectofinal", usuario,contrasena);
-            statement = connection.createStatement();
-            System.out.println("Conectado...");
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/proyectofinal", "usuarioProyectoFinal", "123");
+            conn.close();
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
-            System.err.println("Error de conexión a la base de datos: " + e);
+            System.out.println("Error de conexión: " + e.getMessage());
         }
     }
     

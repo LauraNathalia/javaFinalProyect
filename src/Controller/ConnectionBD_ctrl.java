@@ -26,7 +26,7 @@ public class ConnectionBD_ctrl implements ActionListener{
             String usuario = connectionBD_view.JTusuario.getText();
             String contrasena = new String(connectionBD_view.JPcontrasena.getPassword());
             ConnectionBD connectionBD = new ConnectionBD();
-            connectionBD.connect(usuario, contrasena);
+            connectionBD.connect();
             connectionBD_view.dispose();
         }
     }

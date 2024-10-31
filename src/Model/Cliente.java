@@ -8,34 +8,29 @@ package Model;
  *
  * @author Laura Nathalia
  */
-public class Administrador {
-    int codigo;
-    String contrasena, fechaCreacion, primerNombre, segundoNombre, primerApellido, segundoApellido, correo;
+public class Cliente {
+    int ID;
+    String primerNombre, segundoNombre, primerApellido, segundoApellido, correo, contrasena;
+    long telefono;
+    boolean activo;
 
-    public Administrador(int codigo, String contrasena, String fechaCreacion, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo) {
-        this.codigo = codigo;
-        this.contrasena = contrasena;
-        this.fechaCreacion = fechaCreacion;
+    public Cliente() {
+    }
+
+    public Cliente(int ID, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo, String contrasena, long telefono, boolean activo) {
+        this.ID = ID;
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
         this.primerApellido = primerApellido;
         this.segundoApellido = segundoApellido;
         this.correo = correo;
-    }
-
-    public Administrador() {
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
-
-    public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+        this.telefono = telefono;
+        this.activo = activo;
     }
 
-    public void setFechaCreacion(String fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public void setPrimerNombre(String primerNombre) {
@@ -58,16 +53,20 @@ public class Administrador {
         this.correo = correo;
     }
 
-    public int getCodigo() {
-        return codigo;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
-    public String getContrasena() {
-        return contrasena;
+    public void setTelefono(long telefono) {
+        this.telefono = telefono;
     }
 
-    public String getFechaCreacion() {
-        return fechaCreacion;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public String getPrimerNombre() {
@@ -89,7 +88,19 @@ public class Administrador {
     public String getCorreo() {
         return correo;
     }
-    
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public long getTelefono() {
+        return telefono;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
     
     
 }
