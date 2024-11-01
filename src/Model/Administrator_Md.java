@@ -15,7 +15,6 @@ Funcion de la clase:
 
 package Model;
 
-import View.ConnectionBD_view;
 import java.util.*;
 import java.sql.*;
 
@@ -23,15 +22,13 @@ import java.sql.*;
  *
  * @author Laura Nathalia
 **/
-public class Administrador_Md extends ConnectionBD{
-    public ConnectionBD_view connectionBD_view;
+public class Administrator_Md extends ConnectionBD{
 
-    public Administrador_Md(ConnectionBD_view connectionBD_view) 
+    public Administrator_Md() 
     {
-        this.connectionBD_view = connectionBD_view;
     }
     
-    private void agregarAdmin(Administrador administrador)//funcional
+    private void agregarAdmin(Administrator administrador)//funcional
     {
         try {
             connect();
@@ -56,9 +53,9 @@ public class Administrador_Md extends ConnectionBD{
         }
     }
     
-    public List<Administrador> listarAdmins()//funcional
+    public List<Administrator> listarAdmins()//funcional
     {
-        List<Administrador> results = new ArrayList<>();
+        List<Administrator> results = new ArrayList<>();
         try {
             connect();
             String sql = "select * from administradores";
@@ -67,7 +64,7 @@ public class Administrador_Md extends ConnectionBD{
             
             while(resultSet.next())
             {
-                Administrador admin = new Administrador(resultSet.getInt("codigo"), resultSet.getString("contrasena"), resultSet.getString("fechaCreacion"), resultSet.getString("primerNombre"), resultSet.getString("segundoNombre"), resultSet.getString("primerApellido"), resultSet.getString("segundoApellido"), resultSet.getString("correo"));
+                Administrator admin = new Administrator(resultSet.getInt("codigo"), resultSet.getString("contrasena"), resultSet.getString("fechaCreacion"), resultSet.getString("primerNombre"), resultSet.getString("segundoNombre"), resultSet.getString("primerApellido"), resultSet.getString("segundoApellido"), resultSet.getString("correo"));
                 results.add(admin);
             }
             
@@ -84,12 +81,12 @@ public class Administrador_Md extends ConnectionBD{
         return results;
     }
     
-    public Administrador buscarAdmin(int codigo)//funcional
+    public Administrator buscarAdmin(int codigo)//funcional
     {
         //para hacer mas breve buscar el codigo se hará uso de la funcion listarAdmins
         List administradores = listarAdmins();
         for (int i = 0; i < administradores.size(); i++) {
-            Administrador get = (Administrador) administradores.get(i);
+            Administrator get = (Administrator) administradores.get(i);
             if(get.getCodigo()==codigo)
             {
                 return get;//se encontró el administrador
@@ -102,7 +99,7 @@ public class Administrador_Md extends ConnectionBD{
     {
         //eliminar por codigo
         //parahacer mas breve eliminar se buscara el admin con la funcion buscar primero:
-        Administrador admin = buscarAdmin(codigo);
+        Administrator admin = buscarAdmin(codigo);
         //no se implementará la logica se si es null o no porque antes de que se ejecute la accion eliminar admin, el programa primero lo buscara, por lo que seria redundante
         try {
             connect();
@@ -120,23 +117,23 @@ public class Administrador_Md extends ConnectionBD{
         }
     }
     
-    public void editarAdmin(Cliente cliente)//
+    public void editarAdmin(Administrator admin)//
     {
         //solo hayun administrador en el sistema, (el cliente, comprador del programa, dueño del negocio, etc)
         //el metodo pide un obj. cliente y lo actualizara completo, pero a la hora de pedir actualizar admin se da la opcion
         //de cuales atributos actualizar, se cambian en el objeto, y se deja el resto igual.
         try {
             connect();
-            String sql = "update clientes set primerNombre = ?, segundoNombre=?, primerApellido=?, segundoApellido=?, correo=?, contrasena=?, telefono=? where ID=?";//la pk en administrador sí se puede cambiar
+            String sql = "update administradores set contrasena=?,fechaCreacion=?,primerNombre = ?, segundoNombre=?, primerApellido=?, segundoApellido=?, correo=? where codigo=?";//la pk en administrador no puede cambiar
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, cliente.getPrimerNombre());
-            preparedStatement.setString(2, cliente.getSegundoNombre());
-            preparedStatement.setString(3, cliente.getPrimerApellido());
-            preparedStatement.setString(4, cliente.getSegundoApellido());
-            preparedStatement.setString(5, cliente.getCorreo());
-            preparedStatement.setString(6, cliente.getContrasena());
-            preparedStatement.setLong(7, cliente.getTelefono());
-            preparedStatement.setLong(8, cliente.getID());
+            preparedStatement.setString(1, admin.getContrasena());
+            preparedStatement.setString(2, admin.getFechaCreacion());
+            preparedStatement.setString(3, admin.getPrimerNombre());
+            preparedStatement.setString(4, admin.getSegundoNombre());
+            preparedStatement.setString(5, admin.getPrimerApellido());
+            preparedStatement.setString(6, admin.getSegundoApellido());
+            preparedStatement.setString(7, admin.getCorreo());
+            preparedStatement.setInt(8, admin.getCodigo());
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -147,36 +144,5 @@ public class Administrador_Md extends ConnectionBD{
             disconnect();
         }
     
-    }
- 
-    public static void main(String[] args) {/*main de pruebass*/
-        ConnectionBD_view ejecutar = new ConnectionBD_view();
-        while (true) {
-            if (!ejecutar.isDisplayable()) { // Verifica si la ventana ha sido cerrada
-                break; // Sale del bucle si la ventana se ha cerrado
-            }
-            // Agrega un pequeño retraso para no bloquear el hilo de la interfaz de usuario
-            try {
-                Thread.sleep(500); // Verifica cada medio segundo
-            } catch (InterruptedException e) {
-                System.out.println("error: "+e);
-            }
-        }
-        Administrador_Md xx = new Administrador_Md(ejecutar); // Pasa valores por defecto si es necesario
-        /*int codigo = xx.generarCodigo();
-        System.out.println("codigo:" + codigo);
-        
-        List<Administrador> lista = xx.listarAdmins();
-        for (Administrador administrador : lista) {
-            System.out.println(administrador);
-        }
-        
-        int codigoABuscar = 11111; // El código que deseas buscar
-        xx.eliminarAdmin(codigoABuscar);
-        
-        Administrador admin = new Administrador(11111, "hola", "2024/10/30", "laura", "nathalia","padilla", "castano", "hola@gmail.com");
-        xx.agregarAdmin(admin);
-        xx.eliminarAdmin(11111);
-        */
     }
 }

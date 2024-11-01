@@ -4,7 +4,7 @@
  */
 package Model;
 
-import View.ConnectionBD_view;
+import java.math.BigInteger;
 import java.util.*;
 import java.sql.*;
 
@@ -12,12 +12,10 @@ import java.sql.*;
  *
  * @author Laura Nathalia
  */
-public class Cliente_Md extends ConnectionBD{
-    public ConnectionBD_view connectionBD_view;//esto es necesario para poder acceder a la contrasena y usuarios e ingresar a la BD
+public class Customer_Md extends ConnectionBD{
 
-    public Cliente_Md(ConnectionBD_view connectionBD_view) 
+    public Customer_Md() 
     {
-        this.connectionBD_view = connectionBD_view;
     }
     
     private boolean verificarID(int id) //funcional
@@ -60,7 +58,7 @@ public class Cliente_Md extends ConnectionBD{
         return codigo;
     }
     
-    public void agregarCliente(Cliente cliente)//funcional
+    public void agregarCliente(Customer cliente)//funcional
     {
         try {
             connect();
@@ -71,9 +69,9 @@ public class Cliente_Md extends ConnectionBD{
             preparedStatement.setString(3, cliente.getSegundoNombre());
             preparedStatement.setString(4, cliente.getPrimerApellido());
             preparedStatement.setString(5, cliente.getSegundoApellido());
-            preparedStatement.setString(6, cliente.getCorreo());
-            preparedStatement.setString(7, cliente.getContrasena());
-            preparedStatement.setLong(8, cliente.getTelefono());
+            preparedStatement.setLong(6, cliente.getTelefono().longValue());
+            preparedStatement.setString(7, cliente.getCorreo());
+            preparedStatement.setString(8, cliente.getContrasena());
             preparedStatement.setBoolean(9, cliente.isActivo());
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -86,9 +84,9 @@ public class Cliente_Md extends ConnectionBD{
         }
     }
     
-     public List<Cliente> listarClientes()//funcional
+     public List<Customer> listarClientes()//funcional
     {
-        List<Cliente> results = new ArrayList<>();
+        List<Customer> results = new ArrayList<>();
         try {
             connect();
             String sql = "select * from clientes";
@@ -97,7 +95,7 @@ public class Cliente_Md extends ConnectionBD{
             
             while(resultSet.next())
             {
-                Cliente cliente = new Cliente(resultSet.getInt("ID"), resultSet.getString("primerNombre"), resultSet.getString("segundoNombre"), resultSet.getString("primerApellido"), resultSet.getString("segundoApellido"), resultSet.getString("correo"), resultSet.getString("Contrasena"), resultSet.getLong("telefono"), resultSet.getBoolean("activo"));
+                Customer cliente = new Customer(resultSet.getInt("ID"), resultSet.getString("primerNombre"), resultSet.getString("segundoNombre"), resultSet.getString("primerApellido"), resultSet.getString("segundoApellido"),  new BigInteger(resultSet.getString("telefono")), resultSet.getString("correo"), resultSet.getString("Contrasena"),resultSet.getBoolean("activo"));
                 results.add(cliente);
             }
             
@@ -114,12 +112,12 @@ public class Cliente_Md extends ConnectionBD{
         return results;
     }
     
-     public Cliente buscarCliente(int ID)//funcional
+     public Customer buscarCliente(int ID)//funcional
     {
         //para hacer mas breve buscar el codigo se hará uso de la funcion listarClientes
         List clientes = listarClientes();
         for (int i = 0; i < clientes.size(); i++) {
-            Cliente get = (Cliente) clientes.get(i);
+            Customer get = (Customer) clientes.get(i);
             if(get.getID()==ID)
             {
                 return get;//se encontró el cliente
@@ -148,20 +146,21 @@ public class Cliente_Md extends ConnectionBD{
         }
     }
      
-        public void editarCliente(Cliente cliente)//
+        public void editarCliente(Customer cliente)//
     {
         try {
             connect();
-            String sql = "update clientes set primerNombre = ?, segundoNombre=?, primerApellido=?, segundoApellido=?, correo=?, contrasena=?, telefono=? where ID=?";//la pk en cliente no se puede cambiar
+            String sql = "update clientes set primerNombre = ?, segundoNombre=?, primerApellido=?, segundoApellido=?, telefono=?, correo=?, contrasena=?, activo=? where ID=?";//la pk en cliente no se puede cambiar
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, cliente.getPrimerNombre());
             preparedStatement.setString(2, cliente.getSegundoNombre());
             preparedStatement.setString(3, cliente.getPrimerApellido());
             preparedStatement.setString(4, cliente.getSegundoApellido());
-            preparedStatement.setString(5, cliente.getCorreo());
-            preparedStatement.setString(6, cliente.getContrasena());
-            preparedStatement.setLong(7, cliente.getTelefono());
-            preparedStatement.setLong(8, cliente.getID());
+            preparedStatement.setLong(5, cliente.getTelefono().longValue());
+            preparedStatement.setString(6, cliente.getCorreo());
+            preparedStatement.setString(7, cliente.getContrasena());
+            preparedStatement.setBoolean(8, cliente.isActivo());
+            preparedStatement.setInt(9, cliente.getID());
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -171,7 +170,5 @@ public class Cliente_Md extends ConnectionBD{
         {
             disconnect();
         }
-    
     }
-    
 }

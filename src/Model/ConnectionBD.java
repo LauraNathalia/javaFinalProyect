@@ -21,11 +21,12 @@ public class ConnectionBD {
     public void connect(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/proyectofinal", "usuarioProyectoFinal", "123");
-            conn.close();
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/proyectofinal", "usuarioProyectoFinal","123");
+            statement = connection.createStatement();
+            //System.out.println("Conectado...");
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
-            System.out.println("Error de conexión: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error de conexión a la base de datos");
         }
     }
     

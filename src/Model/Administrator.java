@@ -8,11 +8,11 @@ package Model;
  *
  * @author Laura Nathalia
  */
-public class Administrador {
+public class Administrator {
     int codigo;
     String contrasena, fechaCreacion, primerNombre, segundoNombre, primerApellido, segundoApellido, correo;
 
-    public Administrador(int codigo, String contrasena, String fechaCreacion, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo) {
+    public Administrator(int codigo, String contrasena, String fechaCreacion, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo) {
         this.codigo = codigo;
         this.contrasena = contrasena;
         this.fechaCreacion = fechaCreacion;
@@ -23,7 +23,7 @@ public class Administrador {
         this.correo = correo;
     }
 
-    public Administrador() {
+    public Administrator() {
     }
 
     public void setCodigo(int codigo) {

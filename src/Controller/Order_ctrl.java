@@ -8,6 +8,6 @@ package Controller;
  *
  * @author Laura Nathalia
  */
-public class Administrador_ctrl {
+public class Order_ctrl {
     
 }

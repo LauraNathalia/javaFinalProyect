@@ -4,20 +4,22 @@
  */
 package Model;
 
+import java.math.BigInteger;//para el telefono
+
 /**
  *
  * @author Laura Nathalia
  */
-public class Cliente {
+public class Customer {
     int ID;
     String primerNombre, segundoNombre, primerApellido, segundoApellido, correo, contrasena;
-    long telefono;
+    BigInteger telefono;
     boolean activo;
 
-    public Cliente() {
+    public Customer() {
     }
 
-    public Cliente(int ID, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String correo, String contrasena, long telefono, boolean activo) {
+    public Customer(int ID, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, BigInteger telefono,String correo, String contrasena, boolean activo) {
         this.ID = ID;
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
@@ -57,7 +59,7 @@ public class Cliente {
         this.contrasena = contrasena;
     }
 
-    public void setTelefono(long telefono) {
+    public void setTelefono(BigInteger telefono) {
         this.telefono = telefono;
     }
 
@@ -93,12 +95,17 @@ public class Cliente {
         return contrasena;
     }
 
-    public long getTelefono() {
+    public BigInteger getTelefono() {
         return telefono;
     }
 
     public boolean isActivo() {
         return activo;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" + "ID=" + ID + ", primerNombre=" + primerNombre + ", segundoNombre=" + segundoNombre + ", primerApellido=" + primerApellido + ", segundoApellido=" + segundoApellido + ", correo=" + correo + ", contrasena=" + contrasena + ", telefono=" + telefono + ", activo=" + activo + '}';
     }
 
     

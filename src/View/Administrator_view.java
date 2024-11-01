@@ -8,6 +8,6 @@ package View;
  *
  * @author Laura Nathalia
  */
-public class Cliente_view {
+public class Administrator_view {
     
 }
