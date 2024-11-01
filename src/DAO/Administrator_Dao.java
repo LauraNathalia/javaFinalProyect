@@ -13,8 +13,10 @@ Funcion de la clase:
     en otras palabras programador creara admin en la bd y admin inicia sesion en el programa con los datos que le proporcione este
 */
 
-package Model;
+package DAO;
 
+import Model.Administrator;
+import Model.ConnectionBD;
 import java.util.*;
 import java.sql.*;
 
@@ -22,9 +24,9 @@ import java.sql.*;
  *
  * @author Laura Nathalia
 **/
-public class Administrator_Md extends ConnectionBD{
+public class Administrator_Dao extends ConnectionBD{
 
-    public Administrator_Md() 
+    public Administrator_Dao() 
     {
     }
     

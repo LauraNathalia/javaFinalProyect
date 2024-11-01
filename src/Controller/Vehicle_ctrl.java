@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Model;
+package Controller;
 
 /**
  *
  * @author Laura Nathalia
  */
-public class Worker_Md {
+public class Vehicle_ctrl {
     
 }

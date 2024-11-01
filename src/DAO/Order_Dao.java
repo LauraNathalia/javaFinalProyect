@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Model;
+package DAO;
 
+import Model.ConnectionBD;
+import Model.Order;
 import static Model.ConnectionBD.connection;
 import static Model.ConnectionBD.statement;
 import java.sql.*;
@@ -15,7 +17,7 @@ import java.util.Random;
  *
  * @author Laura Nathalia
  */
-public class Order_Md extends ConnectionBD{
+public class Order_Dao extends ConnectionBD{
     private Random random = new Random(); 
 
     private boolean verificarCodigo(String codigo) //funcional

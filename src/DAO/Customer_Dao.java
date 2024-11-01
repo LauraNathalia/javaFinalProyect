@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Model;
+package DAO;
 
+import Model.ConnectionBD;
+import Model.Customer;
 import java.math.BigInteger;
 import java.util.*;
 import java.sql.*;
@@ -12,9 +14,9 @@ import java.sql.*;
  *
  * @author Laura Nathalia
  */
-public class Customer_Md extends ConnectionBD{
+public class Customer_Dao extends ConnectionBD{
 
-    public Customer_Md() 
+    public Customer_Dao() 
     {
     }
     

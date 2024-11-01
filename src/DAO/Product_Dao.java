@@ -2,23 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Model;
+package DAO;
 
-import static Model.ConnectionBD.connection;
-import static Model.ConnectionBD.statement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import Model.ConnectionBD;
+import Model.Product;
+import static Model.ConnectionBD.*;
+import java.sql.*;
+import java.util.*;
 
 /**
  *
  * @author Laura Nathalia
  */
-public class Product_Md extends ConnectionBD{
+public class Product_Dao extends ConnectionBD{
 
-    public Product_Md() {
+    public Product_Dao() {
     }
     public void agregarProducto(Product producto)//funcional
     {
@@ -127,31 +125,4 @@ public class Product_Md extends ConnectionBD{
         }
     }
         
-        
-    public static void main(String[] args) {/*main de pruebass*/
-        ConnectionBD ejecutar = new ConnectionBD();
-        ejecutar.connect();
-        
-        Product_Md xx = new Product_Md(); // Pasa valores por defecto si es necesario
-        Product producto = new Product("pan", 500, "arina, leche", "comida", true);
-        
-        xx.agregarProducto(producto);
-        //System.out.println(buscar);
-        
-        /*int codigo = xx.generarCodigo();
-        System.out.println("codigo:" + codigo);
-        
-        List<Administrador> lista = xx.listarAdmins();
-        for (Administrador administrador : lista) {
-            System.out.println(administrador);
-        }
-        
-        int codigoABuscar = 11111; // El código que deseas buscar
-        xx.eliminarAdmin(codigoABuscar);
-        */
-        
-       // Administrador admin = new Administrador(11111, "hola", "2024/10/30", "laura", "nathalia","padilla", "castano", "hola@gmail.com");
-       // xx.agregarAdmin(admin);
-       // xx.eliminarAdmin(11111);
-    }
 }
